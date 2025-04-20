@@ -13,7 +13,6 @@ var (
 	// randSource источник псевдо случайных чисел.
 	// Для повышения уникальности в качестве seed
 	// используется текущее время в unix формате (в виде числа)
-	// ls
 	randSource = rand.NewSource(time.Now().UnixNano())
 	// randRange использует randSource для генерации случайных чисел
 	randRange = rand.New(randSource)
@@ -32,13 +31,18 @@ func getTestParcel() Parcel {
 // TestAddGetDelete проверяет добавление, получение и удаление посылки
 func TestAddGetDelete(t *testing.T) {
 	// prepare
-	db, err := // настройте подключение к БД
+	db, err := sql.Open("sqlite", "tracker.db")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer db.Close()
 	store := NewParcelStore(db)
 	parcel := getTestParcel()
 
 	// add
 	// добавьте новую посылку в БД, убедитесь в отсутствии ошибки и наличии идентификатора
-
+	 
 	// get
 	// получите только что добавленную посылку, убедитесь в отсутствии ошибки
 	// проверьте, что значения всех полей в полученном объекте совпадают со значениями полей в переменной parcel
@@ -51,7 +55,11 @@ func TestAddGetDelete(t *testing.T) {
 // TestSetAddress проверяет обновление адреса
 func TestSetAddress(t *testing.T) {
 	// prepare
-	db, err := // настройте подключение к БД
+	db, err := sql.Open("sqlite", "tracker.db")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 
 	// add
 	// добавьте новую посылку в БД, убедитесь в отсутствии ошибки и наличии идентификатора
@@ -67,7 +75,11 @@ func TestSetAddress(t *testing.T) {
 // TestSetStatus проверяет обновление статуса
 func TestSetStatus(t *testing.T) {
 	// prepare
-	db, err := // настройте подключение к БД
+	db, err := sql.Open("sqlite", "tracker.db")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 
 	// add
 	// добавьте новую посылку в БД, убедитесь в отсутствии ошибки и наличии идентификатора
@@ -82,7 +94,11 @@ func TestSetStatus(t *testing.T) {
 // TestGetByClient проверяет получение посылок по идентификатору клиента
 func TestGetByClient(t *testing.T) {
 	// prepare
-	db, err := // настройте подключение к БД
+	db, err := sql.Open("sqlite", "tracker.db")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 
 	parcels := []Parcel{
 		getTestParcel(),
