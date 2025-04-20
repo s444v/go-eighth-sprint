@@ -14,8 +14,7 @@ func NewParcelStore(db *sql.DB) ParcelStore {
 
 func (s ParcelStore) Add(p Parcel) (int, error) {
 	// реализуйте добавление строки в таблицу parcel, используйте данные из переменной p
-	res, err := s.db.Exec("INSERT INTO parcel (number, client, status,address, created_at) VALUES (:number, :client, :status, :address, :created_at)",
-		sql.Named("number", p.Number),
+	res, err := s.db.Exec("INSERT INTO parcel ( client, status,address, created_at) VALUES ( :client, :status, :address, :created_at)",
 		sql.Named("client", p.Client),
 		sql.Named("status", p.Status),
 		sql.Named("address", p.Address),
@@ -36,7 +35,7 @@ func (s ParcelStore) Get(number int) (Parcel, error) {
 	// реализуйте чтение строки по заданному number
 	// здесь из таблицы должна вернуться только одна строка
 	p := Parcel{}
-	row := s.db.QueryRow("SELECT * FROM clients WHERE number = :number", sql.Named("number", number))
+	row := s.db.QueryRow("SELECT * FROM parcel WHERE number = :number", sql.Named("number", number))
 	if row.Err() != nil {
 		return p, row.Err()
 	}
@@ -52,7 +51,7 @@ func (s ParcelStore) GetByClient(client int) ([]Parcel, error) {
 	// реализуйте чтение строк из таблицы parcel по заданному client
 	// здесь из таблицы может вернуться несколько строк
 	var res []Parcel
-	rows, err := s.db.Query("SELECT * FROM clients WHERE client = :client", sql.Named("client", client))
+	rows, err := s.db.Query("SELECT * FROM parcel WHERE client = :client", sql.Named("client", client))
 	if err != nil {
 		return res, err
 	}
